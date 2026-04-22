@@ -1,0 +1,9 @@
+venv/
+__pycache__/
+*.pyc
+.env
+.venv
+.git/
+frontend/node_modules/
+frontend/package-lock.json
+npm-debug.log
