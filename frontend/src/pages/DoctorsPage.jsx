@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box, Typography, Button, Grid, Card, CardContent, Chip } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
+import BackButton from '../components/BackButton';
 
 function DoctorsPage() {
   const doctors = [
@@ -12,7 +13,8 @@ function DoctorsPage() {
 
   return (
     <Box sx={{ p: 4 }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4, flexWrap: 'wrap', gap: 2 }}>
+        <BackButton label="Volver al Inicio" />
         <Typography variant="h3" fontWeight={700}>
           Doctores
         </Typography>

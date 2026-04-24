@@ -1,15 +1,19 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, Typography, Button, Grid2, Card, CardContent, Paper } from '@mui/material';
+import { Box, Typography, Button, Grid, Card, CardContent, Paper } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import SearchIcon from '@mui/icons-material/Search';
+import BackButton from '../components/BackButton';
 
 function PatientsPage() {
   const navigate = useNavigate();
 
   return (
     <Box sx={{ p: 4 }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4, flexWrap: 'wrap', gap: 2 }}>
+        <Box>
+          <BackButton label="Volver al Inicio" />
+        </Box>
         <Typography variant="h3" fontWeight={700}>
           Pacientes
         </Typography>

@@ -151,3 +151,158 @@ DB_PORT=5432
 ## Licencia
 
 MIT License
+
+---
+
+## Project Purpose & Scope
+
+This repository provides a demo medical clinic management system built with Django (backend) and React (frontend). **It is NOT intended for production use or to store real patient data, and therefore does not meet HIPAA compliance requirements.**
+
+## Prerequisites
+
+- Docker & Docker Compose (recommended for quick start)
+- Python >= 3.11
+- Node.js >= 18
+- Git
+- (Optional) Make for convenience scripts
+
+## Installation
+
+### Docker‑based Setup (recommended)
+
+1. Copy environment variables:
+   ```bash
+   cp .env.example .env
+   ```
+2. Build and start containers:
+   ```bash
+   docker-compose up --build -d
+   ```
+3. Access the services:
+   - Frontend: http://localhost:3000
+   - API: http://localhost:8000/api/
+   - Admin: http://localhost:8000/admin/
+
+### Local Development (without Docker)
+
+#### Backend
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+cd backend
+pip install -r requirements.txt
+python manage.py migrate
+# Create a superuser (optional)
+python manage.py createsuperuser
+python manage.py runserver
+```
+
+#### Frontend
+
+```bash
+cd frontend
+npm ci
+npm run dev
+```
+
+The frontend runs on http://localhost:5173 and proxies API requests to the Django backend.
+
+## Running Tests
+
+- **Backend tests** (Django/pytest):
+  ```bash
+  cd backend
+  pytest
+  ```
+- **Frontend tests** (Vitest/Jest):
+  ```bash
+  cd frontend
+  npm test
+  ```
+
+## Code Quality / Linting
+
+- Python linting:
+  ```bash
+  ruff check backend
+  ```
+- JavaScript/React linting:
+  ```bash
+  cd frontend
+  npm run lint
+  ```
+
+## Environment Configuration
+
+The `.env` file must contain the following keys (see `.env.example` for defaults):
+
+```
+DJANGO_SECRET_KEY=change-me-in-production
+DJANGO_DEBUG=True
+DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1
+DB_NAME=medical_software
+DB_USER=postgres
+DB_PASSWORD=postgres
+DB_PORT=5432
+```
+
+Adjust values as needed for your environment. Never commit real secrets.
+
+## Database Migration & Seeding
+
+```bash
+# Apply migrations
+python manage.py migrate
+# (Optional) Load demo data
+python manage.py loaddata demo_data.json
+```
+
+## Authentication & Authorization
+
+The API uses Django REST Framework token authentication. After creating a superuser, obtain a token via the `/api/token/` endpoint and include it in the `Authorization: Token <your-token>` header for protected routes.
+
+## API Documentation
+
+If Swagger/OpenAPI is enabled, you can view interactive docs at `http://localhost:8000/api/docs/`.
+
+## Frontend Production Build
+
+```bash
+cd frontend
+npm run build
+```
+The static files are generated in `frontend/dist/` and can be served by Nginx (see `nginx.conf`).
+
+## Docker Compose Services Overview
+
+| Service   | Purpose                               | Ports |
+|-----------|---------------------------------------|-------|
+| db        | PostgreSQL database                    | 5432 |
+| backend   | Django API server                      | 8000 |
+| frontend  | React development server (or static)  | 3000 (dev) / 80 (prod) |
+| nginx     | Reverse proxy for production deployment | 80 |
+
+## Troubleshooting
+
+- **Port conflicts**: Ensure ports 3000, 8000, and 5432 are free or adjust `docker-compose.yml`.
+- **Database connection errors**: Verify `DB_HOST` (default `db` when using Docker) and credentials in `.env`.
+- **CORS issues**: The backend is configured to allow requests from `http://localhost:3000`. Update `CORS_ALLOWED_ORIGINS` in settings if you change the frontend URL.
+
+## Contributing
+
+1. Fork the repository.
+2. Create a feature branch (`git checkout -b feature/your-feature`).
+3. Follow code style guidelines (ruff, eslint, prettier).
+4. Run tests and ensure they pass.
+5. Submit a Pull Request with a clear description of changes.
+
+## Contact / Maintainers
+
+For questions or issues, please open an issue on GitHub or contact the maintainer at `maintainer@example.com`.
+
+---
+
+## Licencia
+
+MIT License

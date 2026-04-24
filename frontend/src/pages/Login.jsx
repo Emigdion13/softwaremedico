@@ -55,11 +55,11 @@ function Login() {
       localStorage.setItem('refreshToken', data.refresh);
       localStorage.setItem('user', JSON.stringify(data.user));
 
-      // Login successful
-      await login(data.user);
+      // Login successful - pass tokens to auth context
+      await login(data.user, data.access, data.refresh);
 
       // Redirect to dashboard (or home page)
-      navigate('/appointments');
+      navigate('/');
     } catch (err) {
       setError(err.message || 'Error al iniciar sesión. Intente nuevamente.');
     } finally {

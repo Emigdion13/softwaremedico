@@ -6,6 +6,7 @@ import {
   InputAdornment, IconButton, Link
 } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { useAuth } from '../utils/auth';
 
 function Register() {
   const [showPassword, setShowPassword] = useState(false);
@@ -19,6 +20,7 @@ function Register() {
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
 
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -67,13 +69,20 @@ function Register() {
         throw new Error(errorMsg);
       }
 
-      // Registration successful
-      setSuccess('¡Registro exitoso! Redirigiendo a login...');
+      // Registration successful - backend returns user object
+      const userData = await response.json();
       
-      // Wait briefly then redirect
-      setTimeout(() => {
-        navigate('/login', { state: { registered: true } });
-      }, 1500);
+      // Auto-login after registration
+      if (userData.user) {
+        try {
+          await login(userData.user);
+        } catch (authErr) {
+          console.error('Auth context update failed:', authErr);
+        }
+      }
+
+      // Redirect to home page
+      navigate('/');
     } catch (err) {
       setError(err.message || 'Error al registrar. Intente nuevamente.');
     } finally {

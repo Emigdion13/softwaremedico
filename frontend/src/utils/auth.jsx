@@ -31,7 +31,12 @@ export function AuthProvider({ children }) {
     setLoading(false);
   }, []);
 
-  const login = async (userData) => {
+  const login = async (userData, accessToken = null, refreshToken = null) => {
+    if (accessToken && refreshToken) {
+      localStorage.setItem('accessToken', accessToken);
+      localStorage.setItem('refreshToken', refreshToken);
+    }
+    localStorage.setItem('user', JSON.stringify(userData));
     setUser(userData);
   };
 
